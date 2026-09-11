@@ -1,0 +1,28 @@
+info:
+  name: Create Ticket
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://127.0.0.1:5000/api/tickets
+  body:
+    type: json
+    data: |-
+      {
+        "id": 4,
+        "ticket_id": "TCK-1820EE27B311",
+        "customer_name": "Ravi Shekhar",
+        "customer_email": "ravi.shekhar13@gmail.com",
+        "ticket_status": "Open",
+        "ticket_priority": "Low",
+        "ticket_subject": "PC not working",
+        "issue_description": "BSD Error - only blue screen is visible no progress in OS loading."
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

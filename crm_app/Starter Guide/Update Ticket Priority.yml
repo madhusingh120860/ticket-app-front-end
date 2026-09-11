@@ -1,0 +1,22 @@
+info:
+  name: Update Ticket Priority
+  type: http
+  seq: 1
+
+http:
+  method: PUT
+  url: http://127.0.0.1:5000/api/tickets/TCK-3370CA191D7C
+  body:
+    type: json
+    data: |-
+      {
+        "ticket_priority":"High"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+​
