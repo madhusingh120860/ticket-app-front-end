@@ -101,3 +101,10 @@ def generate_Routes(app, db, Tickets, Notes):
         notes = Notes.query.all()
         return jsonify([n.to_dict() for n in notes])
         # return jsonify(user.to_dict())
+
+    @app.route("/api/notes/<int:note_id>", methods=["DELETE"])
+    def delete_note(note_id):
+        note = Notes.query.get_or_404(note_id)
+        db.session.delete(note)
+        db.session.commit()
+        return jsonify({"message": f"Note {note_id} deleted"}), 200

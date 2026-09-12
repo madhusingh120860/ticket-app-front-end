@@ -66,7 +66,10 @@
             </div>
             <div class="notes">
               <div class="notes-heading"><h4>Notes</h4><span>{{ notes.length }}</span></div>
-              <p v-for="note in notes" :key="note.id" class="note">{{ note.note_content }}</p>
+              <div v-for="note in notes" :key="note.id" class="note">
+                <span>{{ note.note_content }}</span>
+                <button class="note-delete" type="button" title="Delete note" @click="removeNote(note)">×</button>
+              </div>
               <form class="note-form" @submit.prevent="addNote"><input v-model="noteContent" placeholder="Add a note..." required /><button class="button button-small">Add</button></form>
             </div>
           </div>
@@ -107,11 +110,12 @@ export default {
     priorityClass (priority) { return `priority-${priority.toLowerCase()}` },
     openCreate () { this.form = blankForm(); this.formError = ''; this.showCreate = true },
     async createTicket () { this.saving = true; this.formError = ''; try { const ticket = await this.request('/api/tickets', { method: 'POST', body: JSON.stringify(this.form) }); this.tickets.unshift(ticket); this.showCreate = false; await this.selectTicket(ticket) } catch (error) { this.formError = error.message } finally { this.saving = false } },
-    async updateTicket (ticket, changes) { const updated = await this.request(`/api/tickets/${ticket.ticket_id}`, { method: 'PUT', body: JSON.stringify(changes) }); Object.assign(ticket, updated) },
+    async updateTicket (ticket, changes) { const updated = await this.request(`/api/tickets/${ticket.ticket_id}`, { method: 'PUT', body: JSON.stringify(changes) }); Object.assign(ticket, updated); return updated },
     async changeStatus (ticket, status) { try { await this.updateTicket(ticket, { ticket_status: status }) } catch (error) { this.error = error.message } },
-    async changePriority (ticket, priority) { try { await this.updateTicket(ticket, { ticket_priority: priority }) } catch (error) { this.error = error.message } },
+    async changePriority (ticket, priority) { try { const updated = await this.updateTicket(ticket, { ticket_priority: priority }); ticket.ticket_priority = updated.ticket_priority || priority } catch (error) { this.error = error.message } },
     async removeTicket () { if (!window.confirm(`Delete ${this.selectedTicket.ticket_id}?`)) return; try { await this.request(`/api/tickets/${this.selectedTicket.ticket_id}`, { method: 'DELETE' }); this.tickets = this.tickets.filter((ticket) => ticket.ticket_id !== this.selectedTicket.ticket_id); this.selectedTicket = this.tickets[0] || null; this.notes = [] } catch (error) { this.error = error.message } },
-    async addNote () { if (!this.noteContent.trim()) return; try { const note = await this.request(`/api/notes/${this.selectedTicket.ticket_id}`, { method: 'POST', body: JSON.stringify({ note_content: this.noteContent }) }); this.notes.push(note); this.noteContent = '' } catch (error) { this.error = error.message } }
+    async addNote () { if (!this.noteContent.trim()) return; try { const note = await this.request(`/api/notes/${this.selectedTicket.ticket_id}`, { method: 'POST', body: JSON.stringify({ note_content: this.noteContent }) }); this.notes.push(note); this.noteContent = '' } catch (error) { this.error = error.message } },
+    async removeNote (note) { if (!window.confirm('Delete this note?')) return; try { await this.request(`/api/notes/${note.id}`, { method: 'DELETE' }); this.notes = this.notes.filter((item) => item.id !== note.id) } catch (error) { this.error = error.message } }
   }
 }
 </script>
