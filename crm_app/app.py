@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from .models import generate_Models
-from .routes import generate_Routes
-from .config import Config, DevelopmentConfig, ProductionConfig, TestingConfig
+from models import generate_Models
+from routes import generate_Routes
+from config import Config, DevelopmentConfig, ProductionConfig, TestingConfig
 
 
 app = Flask(__name__, static_folder='dist', static_url_path='/')
