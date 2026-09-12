@@ -10,7 +10,7 @@ venv/
 
 # Node / Vite
 node_modules/
-dist/
+frontend/dist
 
 # Environment files
 .env
