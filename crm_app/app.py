@@ -40,5 +40,15 @@ with app.app_context():
 
 generate_Routes(app, db, Tickets, Notes)
 
+# Catch-all to serve the Vue 2 Frontend
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_vue(path):
+    # If the requested path exists inside the 'dist' folder, serve it directly
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    # Otherwise, fall back to index.html for Vue Router single-page application navigation
+    return send_from_directory(app.static_folder, 'index.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
