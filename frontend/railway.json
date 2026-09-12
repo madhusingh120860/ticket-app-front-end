@@ -4,6 +4,7 @@
         "builder":"NIXPACKS"
     },
     "deploy":{
-        "startCommand" : "npm run serve-prod"
+        "startCommand" : "npm run serve-prod",
+        "restartPolicy" : "ON_FAILURE"
     }
 }

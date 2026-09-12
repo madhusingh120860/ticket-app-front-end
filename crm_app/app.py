@@ -6,7 +6,8 @@ from .routes import generate_Routes
 from .config import Config, DevelopmentConfig, ProductionConfig, TestingConfig
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='dist', static_url_path='/')
+
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
 # Load configuration from config.py
