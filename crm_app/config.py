@@ -11,6 +11,7 @@ class Config:
     # Database settings
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL',
+        
         f"sqlite:///{os.path.join(PROJECT_ROOT, 'instance', 'app.db')}",
     )
     
