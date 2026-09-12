@@ -11,6 +11,9 @@ app = Flask(__name__, static_folder='dist', static_url_path='/')
 
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
+# project root directory
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+
 # Load configuration from config.py
 app.config.from_object(DevelopmentConfig)  # Change to ProductionConfig or TestingConfig as needed
 
